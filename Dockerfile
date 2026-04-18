@@ -25,6 +25,7 @@ RUN apt-get update \
 
 COPY app ./app
 COPY scripts ./scripts
+COPY tests ./tests
 
 RUN mkdir -p /data/storage /data/insightface
 

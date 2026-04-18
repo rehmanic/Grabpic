@@ -44,9 +44,10 @@ Crawl the configured `STORAGE_ROOT` (or a specific sub-directory) and automatica
 - **Request Body:**
 ```json
 {
-  "root": "/data/storage/lfw" // Optional: defaults to the STORAGE_ROOT environment variable
+  "root": "/data/storage/lfw"
 }
 ```
+*(Note: `root` is optional; it defaults to the STORAGE_ROOT environment variable.)*
 - **Response:** `200 OK`
 ```json
 {
@@ -96,7 +97,7 @@ Submit a selfie image to act as a secure authentication token. The system finds 
   "similarity": 0.85 
 }
 ```
-*(Throws `400 Bad Request` with `NO_FACE_FOUND` if no face is in the image, or `401 Unauthorized` with `IDENTITY_NOT_FOUND` if the face doesn't match known users.)*
+*(Throws `422 Unprocessable Entity` with `NO_FACE` if no face is in the image, or `404 Not Found` with `NO_MATCH` if the face doesn't match known users.)*
 
 ---
 

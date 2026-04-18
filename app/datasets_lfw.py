@@ -11,6 +11,7 @@ DEFAULT_LFW_KAGGLE_SLUG = "jessicali9530/lfw-dataset"
 
 
 def default_lfw_slug() -> str:
+    """Returns the default LFW dataset slug configured in the application settings."""
     return get_settings().kaggle_lfw_dataset_slug
 
 

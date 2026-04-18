@@ -1,3 +1,7 @@
+"""
+Main entry point for the Grabpic FastAPI application. 
+Configures the app, database lifespan, routers, and exception handlers.
+"""
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
@@ -15,11 +19,13 @@ from app.routers import auth, health, images, ingest
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    """Manages the startup and shutdown lifecycle of the FastAPI application. Creates database tables on startup."""
     Base.metadata.create_all(bind=engine)
     yield
 
 
 def create_app() -> FastAPI:
+    """Creates and configures the FastAPI application instance. Registers routers, exception handlers, and metadata."""
     settings = get_settings()
     app = FastAPI(title=settings.api_title, version=settings.api_version, lifespan=lifespan)
 

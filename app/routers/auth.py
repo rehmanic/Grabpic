@@ -1,3 +1,6 @@
+"""
+Router for authentication-related endpoints, primarily selfie-as-a-key logic.
+"""
 from __future__ import annotations
 
 from fastapi import APIRouter, File, UploadFile
@@ -17,6 +20,10 @@ async def selfie_auth(
     engine: FaceEngineDep,
     file: UploadFile = File(..., description="Selfie image used as the search token."),
 ) -> SelfieAuthResponse:
+    """
+    Authenticate a user based on a selfie image.
+    Extracts face embeddings and matches against known identities.
+    """
     content = await file.read()
     if not content:
         raise unprocessable("EMPTY_FILE", "Uploaded file is empty.")

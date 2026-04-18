@@ -1,3 +1,6 @@
+"""
+Database configuration and session management for PostgreSQL/SQLite using SQLAlchemy.
+"""
 from collections.abc import Generator
 
 from sqlalchemy import create_engine
@@ -14,6 +17,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def get_db() -> Generator[Session, None, None]:
+    """Dependency generator that yields a database session and ensures it is closed after the request."""
     db = SessionLocal()
     try:
         yield db

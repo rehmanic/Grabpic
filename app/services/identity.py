@@ -1,3 +1,6 @@
+"""
+Service for identity management, clustering embeddings into stable grab_ids.
+"""
 from __future__ import annotations
 
 import uuid
@@ -11,6 +14,7 @@ from app.models import GrabIdentity
 
 
 def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
+    """Calculates the cosine similarity between two vectors."""
     na = float(np.linalg.norm(a))
     nb = float(np.linalg.norm(b))
     if na == 0.0 or nb == 0.0:
@@ -19,6 +23,7 @@ def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
 
 
 def _centroid_to_numpy(centroid: list) -> np.ndarray:
+    """Converts a stored centroid list to a NumPy array."""
     return np.asarray(centroid, dtype=np.float32)
 
 

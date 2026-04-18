@@ -1,3 +1,6 @@
+"""
+Router for image ingestion, including folder scanning and individual uploads.
+"""
 from __future__ import annotations
 
 import uuid
@@ -14,6 +17,7 @@ router = APIRouter(prefix="/v1/ingest", tags=["ingest"])
 
 
 def _ensure_under_storage(root: Path, storage_root: Path) -> Path:
+    """Verifies that the provided path is within the designated storage root."""
     root_res = root.resolve()
     base = storage_root.resolve()
     try:
@@ -33,6 +37,7 @@ def ingest_scan(
     settings: SettingsDep,
     engine: FaceEngineDep,
 ) -> IngestScanResponse:
+    """Scan a directory for images and index them into the system."""
     storage = Path(settings.storage_root)
     storage.mkdir(parents=True, exist_ok=True)
     root = Path(body.root) if body.root else storage

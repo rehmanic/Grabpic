@@ -1,3 +1,6 @@
+"""
+Service for facial detection and embedding extraction using InsightFace.
+"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -10,11 +13,13 @@ import numpy as np
 
 @dataclass
 class DetectedFace:
+    """Represents a face detected within an image, including its embedding and bounding box."""
     embedding: np.ndarray
     bbox: dict[str, float]
 
 
 class FaceEngineProtocol(Protocol):
+    """Protocol defining the interface for face extraction engines."""
     def extract_from_bgr(self, image_bgr: np.ndarray) -> list[DetectedFace]: ...
 
 
@@ -22,6 +27,7 @@ class InsightFaceEngine:
     """Wraps InsightFace buffalo_l (512-D embeddings, L2-normalized)."""
 
     def __init__(self, model_name: str, insightface_root: str | None = None) -> None:
+        """Initializes the InsightFace model with the specified model name and root path."""
         from insightface.app import FaceAnalysis
 
         root = os.path.expanduser(insightface_root or "~/.insightface")

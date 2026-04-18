@@ -1,3 +1,6 @@
+"""
+SQLAlchemy ORM models defining the database schema for identities and images.
+"""
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -9,6 +12,7 @@ from sqlalchemy.types import JSON
 
 
 class Base(DeclarativeBase):
+    """Declarative base class for all SQLAlchemy models."""
     pass
 
 

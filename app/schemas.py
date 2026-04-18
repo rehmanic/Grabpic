@@ -1,6 +1,7 @@
+"""
+Pydantic schemas for API request validation and response serialization.
+"""
 from pydantic import BaseModel, Field
-
-
 class ErrorDetail(BaseModel):
     code: str
     message: str

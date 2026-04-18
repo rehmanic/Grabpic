@@ -1,3 +1,6 @@
+"""
+Router for retrieving image metadata linked to specific identities.
+"""
 from __future__ import annotations
 
 from fastapi import APIRouter
@@ -12,6 +15,7 @@ router = APIRouter(prefix="/v1", tags=["images"])
 
 @router.get("/grab/{grab_id}/images", response_model=GrabImagesResponse)
 def list_images_for_grab(grab_id: str, db: DbSession) -> GrabImagesResponse:
+    """List all image metadata associated with a specific grab_id identity."""
     stmt = (
         select(Image)
         .join(ImageFace, ImageFace.image_id == Image.id)

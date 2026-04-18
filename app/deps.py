@@ -1,3 +1,6 @@
+"""
+FastAPI dependencies for database sessions, settings, and facial recognition engine injection.
+"""
 from __future__ import annotations
 
 from typing import Annotated
@@ -13,12 +16,13 @@ _face_engine: FaceEngineProtocol | None = None
 
 
 def configure_face_engine(engine: FaceEngineProtocol | None) -> None:
-    """Test hook: replace the lazy InsightFace singleton."""
+    """Test hook: replace the lazy InsightFace singleton with a mock instance."""
     global _face_engine
     _face_engine = engine
 
 
 def get_face_engine() -> FaceEngineProtocol:
+    """Dependency generator that initializes and returns a singleton instance of the facial recognition engine."""
     global _face_engine
     if _face_engine is None:
         settings = get_settings()
@@ -28,6 +32,7 @@ def get_face_engine() -> FaceEngineProtocol:
 
 
 def get_settings_dep() -> Settings:
+    """Dependency generator that yields the application configuration settings."""
     return get_settings()
 
 

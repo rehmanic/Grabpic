@@ -1,3 +1,6 @@
+"""
+Service for image ingestion, including file hashing, scanning, and database indexing.
+"""
 from __future__ import annotations
 
 import hashlib
@@ -15,6 +18,7 @@ IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
 
 
 def _file_sha256(path: Path) -> str:
+    """Computes the SHA-256 hash of a file for deduplication."""
     h = hashlib.sha256()
     with path.open("rb") as f:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
@@ -23,6 +27,7 @@ def _file_sha256(path: Path) -> str:
 
 
 def iter_image_files(root: Path) -> list[Path]:
+    """Recursively iterates through a directory to find all supported image files."""
     if not root.is_dir():
         return []
     out: list[Path] = []

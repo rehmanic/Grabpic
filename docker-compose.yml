@@ -1,0 +1,51 @@
+# Grabpic stack: Postgres + API. Run: docker compose up --build -d
+#
+# Compose loads a project `.env` file (if present) for ${VAR} substitution below.
+# See `.env.example` for every variable.
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-grabpic}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-grabpic}
+      POSTGRES_DB: ${POSTGRES_DB:-grabpic}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - grabpic_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-grabpic} -d ${POSTGRES_DB:-grabpic}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: grabpic-api:latest
+    ports:
+      - "${API_PORT:-8000}:8000"
+    environment:
+      DATABASE_URL: "${DATABASE_URL:-postgresql+psycopg2://grabpic:grabpic@db:5432/grabpic}"
+      STORAGE_ROOT: "${STORAGE_ROOT:-/data/storage}"
+      INSIGHTFACE_ROOT: "${INSIGHTFACE_ROOT:-/data/insightface}"
+      INSIGHTFACE_MODEL: "${INSIGHTFACE_MODEL:-buffalo_l}"
+      MATCH_THRESHOLD: "${MATCH_THRESHOLD:-0.35}"
+      SELFIE_AUTH_THRESHOLD: "${SELFIE_AUTH_THRESHOLD:-0.32}"
+      API_TITLE: "${API_TITLE:-Grabpic API}"
+      API_VERSION: "${API_VERSION:-1.0.0}"
+      KAGGLE_LFW_DATASET_SLUG: "${KAGGLE_LFW_DATASET_SLUG:-jessicali9530/lfw-dataset}"
+    volumes:
+      - grabpic_data:/data
+      # Uncomment to use Kaggle Hub inside the container (expects kaggle.json on the host):
+      # - ${HOME}/.kaggle:/root/.kaggle:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  grabpic_pgdata:
+  grabpic_data:
